@@ -13,6 +13,9 @@ const _getLinkMoviesCategory = (category: string, page: number): string => {
     url = `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${page}`;
   }
 
+  console.log("LINK", url);
+  
+
   return url;
 }
 
@@ -22,7 +25,7 @@ export const getLinkQuery = (search: string, category: string, page: number): st
   }
 
   if(category) {
-    _getLinkMoviesCategory(category, page)
+    return _getLinkMoviesCategory(category, page)
   }
 
   return `https://api.themoviedb.org/3/discover/movie?language=en-US&page=${page}`

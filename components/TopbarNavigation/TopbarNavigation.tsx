@@ -15,9 +15,9 @@ import type {
 } from './TopbarNavigation.types';
 
 export const FILTER_CATEGORIES: MovieListCategoryFilter[] = [
-  { label: 'Popular', value: 'popular' },
   { label: 'Now Playing', value: 'now_playing' },
   { label: 'Top Rated', value: 'top_rated' },
+  { label: 'Popular', value: 'popular' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
 
