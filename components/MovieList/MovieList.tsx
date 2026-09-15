@@ -12,6 +12,7 @@ const MovieList = ({
       <div className='grid grid-cols-2 mmd:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
       {movieData.map((data, idx) => (
         <MovieCard
+          // onClick={}
           releaseDate={data.release_date ?? ''}
           posterImage={data.poster_path ?? ''}
           title={data.title ?? ''}

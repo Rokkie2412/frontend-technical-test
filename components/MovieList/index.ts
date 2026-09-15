@@ -1,1 +1,1 @@
-export { default } from './MovieList.components'
+export { default } from './MovieList'

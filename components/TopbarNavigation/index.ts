@@ -1,1 +1,1 @@
-export { default } from './TopbarNavigation.components'
+export { default } from './TopbarNavigation'
