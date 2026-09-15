@@ -2,18 +2,18 @@
 
 import { useRef, useEffect, type ReactNode } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSearchParams } from 'next/navigation'
 import Image from "next/image";
 
 import { axiosFetcher } from './libs/axios'
 import { MovieList, Spinner } from './components'
 
-import TopbarNavigation from './components/TopbarNavigation/TopbarNavigation.components'
 import { getLinkListMovies } from './utils'
 
 const LoadingScreen = (): ReactNode => (
   <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
-    <Spinner/>
-    <p className='text-gray-500 font-bold mt-6'>Fetching movies...</p>
+    <Spinner height={48} width={48}/>
+    <p className='text-gray-500 font-bold mt-6'>Fetching Movies...</p>
   </div>
 )
 
@@ -45,6 +45,10 @@ const LoadingMoreMovies = ({
 
 export default function Home() {
   const observerTarget = useRef<HTMLDivElement | null>(null);
+  const pathParams = useSearchParams();
+  const category = pathParams.get('category') || '';
+
+  console.log('pathName', pathParams.get('category'))
   const { 
     data,
     fetchNextPage,
@@ -53,9 +57,9 @@ export default function Home() {
     isPending,
     error,
    } = useInfiniteQuery({
-    queryKey: ['getMovieList', 'category'],
+    queryKey: ['getMovieList', category],
     initialPageParam: 1,
-    queryFn: (query) => axiosFetcher(getLinkListMovies('', query.pageParam)),
+    queryFn: (query) => axiosFetcher(getLinkListMovies(category, query.pageParam)),
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total_pages) {
         return lastPage.page + 1;
@@ -86,10 +90,10 @@ export default function Home() {
   
   return (
     
-    <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-22">
+    <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-18 py-6">
        
       {isPending && <LoadingScreen/>}
-      <div className="flex w-full h-full">
+      <div className="flex w-full h-full justify-center items-center">
         {data && <MovieList movieData={data.pages.flatMap((page) => page.results)} />}
       </div>
       <div ref={observerTarget} className="py-6 text-center">

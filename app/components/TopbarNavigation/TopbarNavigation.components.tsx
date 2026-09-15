@@ -58,20 +58,20 @@ const searchButton = (): ReactNode => (
 )
 
 const filterButton = (
-  categoryName: string, 
+  category: MovieListCategoryFilter,
   router: AppRouterInstance,
   pathName: string,
   searchParams: ReadonlyURLSearchParams
 ): ReactNode => (
   <button 
-    onClick={setCategoryParams(categoryName, router, pathName, searchParams)}
+    onClick={setCategoryParams(category.value, router, pathName, searchParams)}
     className="
       inline-flex items-center justify-center text-white border border-gray-700 transition-all
       hover:border-gray-300 shadow-xs font-medium leading-5 cursor-pointer focus:border-gray-100 duration-300 ease-in-out
-      rounded-base text-sm px-4 py-2.5 rounded-lg focus:outline-none
+      rounded-base text-sm px-6 py-2.5 rounded-lg focus:outline-none text truncate
     " 
     type="button">
-    {categoryName}
+    <p className='text-md'>{category.label}</p>
   </button>
 )
 
@@ -82,14 +82,18 @@ const TopBarNavigation = (): ReactNode =>  {
   const searchParams = useSearchParams();
 
   return (
-    <div className='flex flex-col w-full h-36 bg-zinc-900 items-center justify-center px-22'>   
-      {searchButton()}
-      <div className='flex flex-row gap-2 mt-4 justify-center'>
-        {categories.map((category) => (
-          <div key={category.value}>
-            {filterButton(category.label, router, pathName, searchParams)}
-          </div>
-        ))}
+    <div className='bg-zinc-900'>
+      <div className=' rounded-lg w-full px-8 md:px-14 lg:px-18 py-6'>
+        {searchButton()}   
+      </div>
+      <div className="w-full overflow-x-auto scroll-smooth py-2 px-4 md:px-8 mb-4 scrollbar-none [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-row items-center gap-2 w-max mx-auto">
+          {categories.map((category) => (
+            <div key={category.value} className="shrink-0">
+              {filterButton(category, router, pathName, searchParams)}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
