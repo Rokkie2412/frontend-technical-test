@@ -1,4 +1,4 @@
-export const getLinkMoviesCategory = (category: string, page: number): string => {
+const _getLinkMoviesCategory = (category: string, page: number): string => {
   let url = ''
 
   if (category === 'now_playing') {
@@ -17,14 +17,20 @@ export const getLinkMoviesCategory = (category: string, page: number): string =>
   return url;
 }
 
-export const getLinkQuery = (search: string, category: string, page: number) => {
+export const getLinkQuery = (search: string, category: string, page: number): string => {
   if (search) {
     return `https://api.themoviedb.org/3/search/movie?query=${search}&language=en-US&page=${page}`
   }
 
   if(category) {
-    getLinkMoviesCategory(category, page)
+    _getLinkMoviesCategory(category, page)
   }
 
   return `https://api.themoviedb.org/3/discover/movie?language=en-US&page=${page}`
+}
+
+export const getLinkDetailMovie = (movieId: string): string => {
+  const link= `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`
+
+  return link
 }

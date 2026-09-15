@@ -4,7 +4,7 @@ import type { Props } from './MovieList.types'
 
 const MovieList = ({
  movieData,
- searchFilter
+ searchFilter,
 }: Props) => {
   return (
     <div>
@@ -12,7 +12,7 @@ const MovieList = ({
       <div className='grid grid-cols-2 mmd:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
       {movieData.map((data, idx) => (
         <MovieCard
-          // onClick={}
+          hrefLink={`movie/${data.id}`}
           releaseDate={data.release_date ?? ''}
           posterImage={data.poster_path ?? ''}
           title={data.title ?? ''}
