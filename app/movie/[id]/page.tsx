@@ -2,26 +2,15 @@
 
 import { useState, type ReactElement } from 'react';
 import { useParams } from 'next/navigation'
+import Image from 'next/image';
 import { useQuery } from "@tanstack/react-query";
 
 import { axiosFetcher } from "@/libs/axios";
-import { getLinkDetailMovie } from '@/utils/index'
 import { MovieCard, Spinner } from '@/components'
-import { MovieDataType, CrewMovieType, CastMovieType } from '@/types';
-import Image from 'next/image';
-import { ImageProfileProps } from './types';
+import type { MovieDataType } from '@/types';
 
-const getDirector = (data: MovieDataType): CrewMovieType => {
-  const findDirector = (data?.credits?.crew.find((item) => item.job === 'Director') as CrewMovieType)
-
-  return findDirector
-}
-
-const getMainCast = (data: MovieDataType, limit: number): CastMovieType[] | undefined => {
-  const findMainCast = (data?.credits?.cast.filter((item) => item.order < limit))
-
-  return findMainCast
-}
+import { getLinkDetailMovie, getDirector, getMainCast, addLimitCasting } from './utils'
+import type { ButtonShowMoreProps, ImageProfileProps, ListMainCastingProps } from './types';
 
 const LoadingScreen = (): ReactElement => (
   <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
@@ -50,6 +39,42 @@ const ImageProfile = ({
   )
 }
 
+const ButtonShowMore = ({
+  limitMainCast,
+  mainCast,
+  setLimitMainCast
+}: ButtonShowMoreProps): ReactElement | null => {
+  if (mainCast && mainCast?.length >= limitMainCast) {
+    return (
+      <button 
+        onClick={addLimitCasting(setLimitMainCast)} 
+        className='border h-18 cursor-pointer rounded-lg col-span-2 mmd:col-span-1'
+      >
+        <p>Load More Caster...</p>
+      </button>
+    )
+  }
+
+  return null
+}
+
+const ListMainCasting = ({
+  mainCast
+}: ListMainCastingProps): ReactElement[] | null => {
+  if (mainCast) {
+    return mainCast?.map((item) => (
+      <div key={item.order} className='h-full flex flex-col fr'>
+        <ImageProfile
+          name={item.original_name}
+          profilePath={item.profile_path}
+        />
+      </div>
+    ))
+  }
+
+  return null
+}
+
 const MovieDetailPage = () => {
   const [limitMainCast, setLimitMainCast] = useState(8)
   const params = useParams()
@@ -64,8 +89,6 @@ const MovieDetailPage = () => {
     queryFn: () => axiosFetcher(getLinkDetailMovie(getMovieId)),
   })
 
-  console.log('data', data)
-
   const director = getDirector((data) as MovieDataType)
   const mainCast = getMainCast((data) as MovieDataType, limitMainCast)
   const getYear = data?.release_date ? new Date(data?.release_date ).getFullYear() : ''
@@ -76,7 +99,6 @@ const MovieDetailPage = () => {
     return <LoadingScreen/>
   }
   
-
   return (
     <div className='flex flex-1 flex-col w-full h-full bg-zinc-900 px-8 md:px-14 lg:px-[20%] py-12'>
       <div className='flex flex-col w-full md:flex-row md:justify-center md:items-center'>
@@ -105,26 +127,8 @@ const MovieDetailPage = () => {
         <div className='flex flex-col mt-4 w-full'>
           <p className='font-bold mb-2'>Main Cast:</p>
           <div className='grid grid-cols-2 mmd:grid-cols-3 md:grid-cols-4 gap-4 object-fit'>
-            {
-              mainCast?.map((item) => (
-                <div key={item.order} className='h-full flex flex-col fr'>
-                  <ImageProfile
-                    name={item.original_name}
-                    profilePath={item.profile_path}
-                  />
-                </div>
-              ))
-            }
-            {
-              mainCast && mainCast?.length >= limitMainCast && (
-                <button 
-                  onClick={() => { setLimitMainCast((prev) => prev + 4) }} 
-                  className='border h-18 cursor-pointer rounded-lg col-span-2 mmd:col-span-1'
-                >
-                  <p>Load More Caster...</p>
-                </button>
-              )
-            }
+            <ListMainCasting mainCast={mainCast}/>
+            <ButtonShowMore limitMainCast={limitMainCast} mainCast={mainCast} setLimitMainCast={setLimitMainCast}/>
           </div>
         </div>
       </div>

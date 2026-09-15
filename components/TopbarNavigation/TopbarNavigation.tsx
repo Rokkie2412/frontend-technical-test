@@ -1,16 +1,25 @@
 'use client'
 
 import { useState, type ReactElement } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-
-import { FILTER_CATEGORIES } from '@/constants'
 import { 
   setCategoryParams,
   onChangeInput, 
   setSearchParams 
 } from './TopbarNavigation.utils'
-import type { FilterButtonProps, SearchInputProps } from './TopbarNavigation.types';
+import type { 
+  FilterButtonProps, 
+  MovieListCategoryFilter, 
+  SearchInputProps 
+} from './TopbarNavigation.types';
+
+export const FILTER_CATEGORIES: MovieListCategoryFilter[] = [
+  { label: 'Popular', value: 'popular' },
+  { label: 'Now Playing', value: 'now_playing' },
+  { label: 'Top Rated', value: 'top_rated' },
+  { label: 'Upcoming', value: 'upcoming' },
+];
 
 const IconSearch = (): ReactElement => (
   <svg

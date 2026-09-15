@@ -1,3 +1,5 @@
+import { InfiniteScrollMovieDate } from "./types";
+
 const _getLinkMoviesCategory = (category: string, page: number): string => {
   let url = ''
 
@@ -10,9 +12,6 @@ const _getLinkMoviesCategory = (category: string, page: number): string => {
   } else if (category === 'upcoming') {
     url = `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${page}`;
   }
-  
-
-  console.log('url', url)
 
   return url;
 }
@@ -29,8 +28,10 @@ export const getLinkQuery = (search: string, category: string, page: number): st
   return `https://api.themoviedb.org/3/discover/movie?language=en-US&page=${page}`
 }
 
-export const getLinkDetailMovie = (movieId: string): string => {
-  const link= `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits&language=en-US`
-
-  return link
+export const getNextPageParam = () => (lastPage: InfiniteScrollMovieDate) => {
+  if (lastPage.page < lastPage.total_pages) {
+    return lastPage.page + 1;
+  }
+  
+  return undefined;
 }

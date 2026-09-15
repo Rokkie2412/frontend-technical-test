@@ -1,45 +1,43 @@
 'use client'
 
-import { useRef, useEffect, type ReactNode } from "react";
+import { useRef, useEffect, type ReactElement } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from 'next/navigation'
-import Image from "next/image";
 
 import { axiosFetcher } from '@/libs/axios'
 import { MovieList, Spinner } from '@/components'
 
-import { getLinkQuery } from '../utils'
+import { getLinkQuery, getNextPageParam } from './utils'
+import { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
 
-const LoadingScreen = (): ReactNode => (
+const LoadingScreen = (): ReactElement => (
   <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
     <Spinner height={48} width={48}/>
-    <p className='text-gray-500 font-bold mt-6'>Fetching Movies...</p>
+    <p className='text-gray-500 font-bold mt-4'>Fetching Movies...</p>
   </div>
 )
 
 const LoadingMoreMovies = ({
   isFetchingNextPage, 
   hasNextPage
-}: {
-  isFetchingNextPage: boolean;
-  hasNextPage: boolean;
-}) => {
+}: LoadingMoreMoviesProps): ReactElement | null => {
   if(isFetchingNextPage) {
     if(hasNextPage) {
       return (
         <div className='flex flex-col w-full h-full justify-center items-center'>
           <Spinner/>
-          <p className='text-gray-500 font-bold mt-6'>Fetching more movies...</p>
         </div>
       )
-    } else {
-      return (
+    } 
+    
+    return (
         <div className='flex flex-col w-full h-full justify-center items-center bg-zinc-900'>
           <p className='text-gray-500 font-bold mt-6'>All movies have been displayed.</p>
         </div>
       )
-    }
   }
+
+  return null
 }
 
 
@@ -56,16 +54,11 @@ export default function Home() {
     isFetchingNextPage,
     isPending,
     error,
-   } = useInfiniteQuery({
+   } = useInfiniteQuery<InfiniteScrollMovieDate, Error>({
     queryKey: ['getMovieList', category],
     initialPageParam: 1,
-    queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, category, query.pageParam)),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-      return undefined;
-    },
+    queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, category, (query.pageParam) as number)),
+    getNextPageParam: getNextPageParam()
   })
 
   useEffect(() => {

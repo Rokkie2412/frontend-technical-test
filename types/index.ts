@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react"
+
 export type CastMovieType = {
   adult: boolean,
   gender: number,
@@ -52,14 +54,4 @@ export type MovieDataType = {
   credits?: CreditsMovie
 }
 
-export type ApiMovieResponseType = {
-  page: number;
-  results: MovieDataType[];
-  total_pages: number;
-  total_results: number;
-}
-
-export type MovieListCategoryFilter = { 
-  label: string;
-  value: string;
-}
+export type Setter<T> = Dispatch<SetStateAction<T>>
