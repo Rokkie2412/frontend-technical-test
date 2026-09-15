@@ -1,4 +1,4 @@
-import type { MovieDataType } from '@/types/movies.types'
+import type { MovieDataType } from '@/types'
 
 export type Props = {
   movieData: MovieDataType[],

@@ -9,22 +9,26 @@ const MovieCard = ({
   title,
   releaseDate,
   hrefLink = '',
-  imageOnly
+  imageOnly,
+  width = 300,
+  height = 450
 }: Props): ReactElement => {
   const getYear = releaseDate ? new Date(releaseDate).getFullYear() : 'Unknown'
   const url = `https://image.tmdb.org/t/p/w500${posterImage}`
 
   return (
-    <Link href={hrefLink} className='
-      flex flex-col justify-center gap-2 border border-gray-600 rounded-lg hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer
-    '
+    <Link href={hrefLink} className={`
+        flex flex-col justify-center gap-2 border-gray-600 
+        rounded-lg hover:scale-105 transition-transform duration-300 
+        ease-in-out cursor-pointer ${imageOnly ? "" : "border"}
+      `}
     >
       <Image 
-        className='w-full h-auto rounded-t-lg object-cover ' 
+        className={`'w-full h-auto ${imageOnly ? "rounded-lg" : "rounded-t-lg"} object-cover'`} 
         src={url} 
         alt={title ?? ''}
-        width={300} 
-        height={450} 
+        width={width} 
+        height={height} 
         loading='eager' 
       />
       {

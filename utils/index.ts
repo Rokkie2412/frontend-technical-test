@@ -30,7 +30,7 @@ export const getLinkQuery = (search: string, category: string, page: number): st
 }
 
 export const getLinkDetailMovie = (movieId: string): string => {
-  const link= `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`
+  const link= `https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits&language=en-US`
 
   return link
 }

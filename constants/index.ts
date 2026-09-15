@@ -1,4 +1,4 @@
-import type { MovieListCategoryFilter } from "../types/movies.types";
+import type { MovieListCategoryFilter } from "../types";
 
 export const FILTER_CATEGORIES: MovieListCategoryFilter[] = [
   { label: 'Popular', value: 'popular' },

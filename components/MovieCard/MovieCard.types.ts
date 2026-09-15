@@ -3,5 +3,7 @@ export type Props = {
   title?: string,
   releaseDate?: string,
   hrefLink?: string,
-  imageOnly?: boolean
+  imageOnly?: boolean,
+  width?: number
+  height?: number
 }
