@@ -35,3 +35,11 @@ export const getNextPageParam = () => (lastPage: InfiniteScrollMovieDate) => {
   
   return undefined;
 }
+
+export const intersectionObserverEntries = (
+  hasNextPage: boolean, isFetchingNextPage: boolean, fetchNextPage: () => void
+) => (entries: IntersectionObserverEntry[]) => {
+  if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+    fetchNextPage();
+  }
+}

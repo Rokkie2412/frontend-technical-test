@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { axiosFetcher } from '@/libs'
 import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 
-import { getLinkQuery, getNextPageParam } from './utils'
+import { getLinkQuery, getNextPageParam, intersectionObserverEntries } from './utils'
 import { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
 
 const LoadingMoreMovies = ({
@@ -19,20 +19,20 @@ const LoadingMoreMovies = ({
       return (
         <div className='flex flex-col w-full h-full justify-center items-center'>
           <Spinner/>
+          <p className='text-gray-500 font-bold mt-2'>Fetching Movies...</p>
         </div>
       )
     } 
     
     return (
-        <div className='flex flex-col w-full h-full justify-center items-center bg-zinc-900'>
-          <p className='text-gray-500 font-bold mt-6'>All movies have been displayed.</p>
-        </div>
-      )
+      <div className='flex flex-col w-full h-full justify-center items-center bg-zinc-900'>
+        <p className='text-gray-500 font-bold mt-6'>All movies have been displayed.</p>
+      </div>
+    )
   }
 
   return null
 }
-
 
 const Movies = () => {
   const observerTarget = useRef<HTMLDivElement | null>(null);
@@ -60,11 +60,7 @@ const Movies = () => {
     if (!target) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
+      intersectionObserverEntries(hasNextPage, isFetchingNextPage, fetchNextPage),
       { threshold: 0.5 }
     );
 

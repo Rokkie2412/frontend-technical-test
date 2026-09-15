@@ -16,5 +16,4 @@ export type InfiniteScrollMovieDate = {
   results: MovieDataType[];
   total_pages: number;
   total_results: number;
-
 }
