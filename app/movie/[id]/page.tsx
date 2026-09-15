@@ -27,7 +27,7 @@ const ImageProfile = ({
         width={50}
         height={75}
       />
-      <p className='text-md lg:text-lg'>{name}</p>
+      <p className='text-md pr-4 lg:text-lg'>{name}</p>
     </div>
   )
 }
@@ -102,6 +102,7 @@ const MovieDetailPage = () => {
       <div className='flex flex-col w-full md:flex-row md:justify-center md:items-center'>
         <div className='flex md: justify-center md:mb-8'>
           <MovieCard
+            title={data?.original_title}
             posterImage={data?.poster_path ?? ''}
             width={400}
             imageOnly

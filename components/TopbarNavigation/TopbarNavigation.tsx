@@ -56,7 +56,7 @@ const SearchInput = ({
     onSubmit={onSubmit}
     className="
     flex flex-row items-center justify-center gap-2 text-white w-full
-    hover:bg-brand-strong shadow-xs font-medium leading-5 border border-gray-700
+    hover:bg-brand-strong shadow-xs font-medium leading-5 border border-gray-300
     rounded-base text-sm px-4 py-2.5 rounded-lg focus:outline-none"
   >
     <IconSearch/>
@@ -83,14 +83,13 @@ const FilterButton = ({
       transition-all duration-300 ease-in-out font-semibold
       ${isActive
           ? "text-zinc-900 border border-gray-100 bg-gray-100 shadow-sm"
-          : "text-gray-300 border border-gray-700 hover:text-white hover:border-gray-300"
+          : "text-gray-300 border border-gray-300 hover:text-gray-400 hover:border-gray-500"
       }
     `}
     type="button">
     <p className='text-md'>{category.label}</p>
   </button>
 )
-
 
 const TopBarNavigation = (): ReactElement =>  {
   const [search, setSearch] = useState<string>('')

@@ -18,7 +18,7 @@ const MovieCard = ({
 
   return (
     <Link href={hrefLink} className={`
-        flex flex-col justify-center gap-2 border-gray-600 
+        flex flex-col justify-center gap-2 border-gray-300 
         rounded-lg hover:scale-105 transition-transform duration-300 
         ease-in-out cursor-pointer ${imageOnly ? "" : "border"}
       `}
@@ -26,7 +26,7 @@ const MovieCard = ({
       <Image 
         className={`'w-full h-auto ${imageOnly ? "rounded-lg" : "rounded-t-lg"} object-cover'`} 
         src={url} 
-        alt={title ?? ''}
+        alt={`posters for ${title}`}
         width={width} 
         height={height} 
         loading='eager' 

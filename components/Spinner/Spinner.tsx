@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import { Props } from "./Spinner.types";
+import type { Props } from "./Spinner.types";
 
 const Spinner = ({ 
   width = 32, 

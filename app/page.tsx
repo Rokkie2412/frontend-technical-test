@@ -10,6 +10,15 @@ import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 import { getLinkQuery, getNextPageParam, intersectionObserverEntries } from './utils'
 import { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
 
+const EmptyState = () => {
+  return (
+    <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900 pb-8 gap-2'>
+      <h1 className="text-2xl font-bold text-center">Currently Our List in Empty</h1>
+      <p className="text-lg text-center">Please wait until we update our movie list.</p>
+    </div>
+  )
+}
+
 const LoadingMoreMovies = ({
   isFetchingNextPage, 
   hasNextPage
@@ -69,6 +78,8 @@ const Movies = () => {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  const getListMovies = data?.pages.flatMap((page) => page.results) ?? []
+
   if (isPending) {
     return <LoadingState loadingText="Fetching Movies..."/>
   }
@@ -76,11 +87,15 @@ const Movies = () => {
   if (error) {
     return <ErrorState onClick={() => refetch()}/>
   }
+
+  if(getListMovies.length <= 0) {
+    return <EmptyState/>
+  }
   
   return (
     <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-48 py-6">
       <div className="flex w-full h-full justify-center items-center">
-        {data && <MovieList movieData={data.pages.flatMap((page) => page.results)} searchFilter={searchParam} />}
+        {data && <MovieList movieData={getListMovies} searchFilter={searchParam} />}
       </div>
       <div ref={observerTarget} className="py-6 text-center">
       <LoadingMoreMovies isFetchingNextPage={isFetchingNextPage} hasNextPage={hasNextPage} />
