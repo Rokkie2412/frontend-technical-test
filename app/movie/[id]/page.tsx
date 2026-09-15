@@ -6,18 +6,11 @@ import Image from 'next/image';
 import { useQuery } from "@tanstack/react-query";
 
 import { axiosFetcher } from "@/libs/axios";
-import { MovieCard, Spinner } from '@/components'
+import { MovieCard, LoadingState, ErrorState } from '@/components'
 import type { MovieDataType } from '@/types';
 
 import { getLinkDetailMovie, getDirector, getMainCast, addLimitCasting } from './utils'
 import type { ButtonShowMoreProps, ImageProfileProps, ListMainCastingProps } from './types';
-
-const LoadingScreen = (): ReactElement => (
-  <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
-    <Spinner height={48} width={48}/>
-    <p className='text-gray-500 font-bold mt-6'>Load Movie...</p>
-  </div>
-)
 
 const ImageProfile = ({
   profilePath,
@@ -80,10 +73,11 @@ const MovieDetailPage = () => {
   const params = useParams()
   const getMovieId = ((params.id ?? '') as string)
     
-    const { 
+  const { 
     data,
     isPending,
     error,
+    refetch,
    } = useQuery<MovieDataType, Error>({
     queryKey: ['getMovieDetail', getMovieId],
     queryFn: () => axiosFetcher(getLinkDetailMovie(getMovieId)),
@@ -96,7 +90,11 @@ const MovieDetailPage = () => {
   console.log('main cast', mainCast);
 
   if(isPending) {
-    return <LoadingScreen/>
+    return <LoadingState loadingText='Load Movie...'/>
+  }
+
+  if(error) {
+    return <ErrorState onClick={() => refetch()}/>
   }
   
   return (
@@ -109,7 +107,7 @@ const MovieDetailPage = () => {
             imageOnly
           />
         </div>
-        <div className='flex flex-col w-full mt-8 mb:mt-2 ml-2 mb:ml-32'>
+        <div className='flex flex-col w-full mt-8 md:mt-2 ml-2 md:ml-24'>
           <h1 className='text-3xl font-bold space-x-2 text-center md:text-left'>{data?.original_title}</h1>
           <p className='textlg italic text-center md:text-left'>{data?.tagline}</p>
           <p className='text-lg mb-8 text-center md:text-left'>{getYear}</p>

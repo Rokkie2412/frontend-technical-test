@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import type { ReadonlyURLSearchParams } from "next/navigation";
-import type { Setter } from "./TopbarNavigation.types";
+
+import type { Setter } from "@/types";
 
 export const setCategoryParams = (
   categoryName: string, 

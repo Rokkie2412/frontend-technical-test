@@ -5,17 +5,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from 'next/navigation'
 
 import { axiosFetcher } from '@/libs/axios'
-import { MovieList, Spinner } from '@/components'
+import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 
 import { getLinkQuery, getNextPageParam } from './utils'
 import { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
-
-const LoadingScreen = (): ReactElement => (
-  <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
-    <Spinner height={48} width={48}/>
-    <p className='text-gray-500 font-bold mt-4'>Fetching Movies...</p>
-  </div>
-)
 
 const LoadingMoreMovies = ({
   isFetchingNextPage, 
@@ -41,7 +34,7 @@ const LoadingMoreMovies = ({
 }
 
 
-export default function Home() {
+const Movies = () => {
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const pathParams = useSearchParams();
   const category = pathParams.get('category') || '';
@@ -54,6 +47,7 @@ export default function Home() {
     isFetchingNextPage,
     isPending,
     error,
+    refetch
    } = useInfiniteQuery<InfiniteScrollMovieDate, Error>({
     queryKey: ['getMovieList', category],
     initialPageParam: 1,
@@ -79,13 +73,16 @@ export default function Home() {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  console.log('data', data)
+  if (isPending) {
+    return <LoadingState loadingText="Fetching Movies..."/>
+  }
+
+  if (error) {
+    return <ErrorState onClick={() => refetch()}/>
+  }
   
   return (
-    
     <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-48 py-6">
-       
-      {isPending && <LoadingScreen/>}
       <div className="flex w-full h-full justify-center items-center">
         {data && <MovieList movieData={data.pages.flatMap((page) => page.results)} searchFilter={searchParam} />}
       </div>
@@ -96,3 +93,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Movies
