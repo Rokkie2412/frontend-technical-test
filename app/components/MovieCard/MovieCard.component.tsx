@@ -11,9 +11,12 @@ const MovieCard = ({
   const url = `https://image.tmdb.org/t/p/w500${posterImage}`
 
   return (
-    <div className='flex flex-col justify-center gap-2 border border-gray-600 rounded-lg'>
+    <div className='
+      flex flex-col justify-center gap-2 border border-gray-600 rounded-lg hover:scale-105 transition-transform duration-300 ease-in-out cursor-pointer
+      
+    '>
       <Image 
-        className='rounded-t-lg' 
+        className='w-full h-auto rounded-t-lg object-cover' 
         src={url} alt={title} 
         width={300} 
         height={450} 

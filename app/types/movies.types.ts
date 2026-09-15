@@ -22,3 +22,8 @@ export type ApiMovieResponseType = {
   total_pages: number;
   total_results: number;
 }
+
+export type MovieListCategoryFilter = { 
+  label: string;
+  value: string;
+}

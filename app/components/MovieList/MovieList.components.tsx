@@ -7,12 +7,12 @@ const MovieList = ({
 }: Props) => {
   return (
     <div className='grid grid-cols-7 gap-4'>
-      {movieData.map((data) => (
+      {movieData.map((data, idx) => (
         <MovieCard
           releaseDate={data.release_date ?? ''}
           posterImage={data.poster_path ?? ''}
           title={data.title ?? ''}
-          key={data.id}
+          key={`${data.id}-${idx}`}
         />
       ))}
     </div>
