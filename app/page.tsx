@@ -8,7 +8,7 @@ import Image from "next/image";
 import { axiosFetcher } from './libs/axios'
 import { MovieList, Spinner } from './components'
 
-import { getLinkListMovies } from './utils'
+import { getLinkQuery } from './utils'
 
 const LoadingScreen = (): ReactNode => (
   <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
@@ -47,8 +47,8 @@ export default function Home() {
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const pathParams = useSearchParams();
   const category = pathParams.get('category') || '';
+  const searchParam = pathParams.get('search') || '';
 
-  console.log('pathName', pathParams.get('category'))
   const { 
     data,
     fetchNextPage,
@@ -59,7 +59,7 @@ export default function Home() {
    } = useInfiniteQuery({
     queryKey: ['getMovieList', category],
     initialPageParam: 1,
-    queryFn: (query) => axiosFetcher(getLinkListMovies(category, query.pageParam)),
+    queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, category, query.pageParam)),
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total_pages) {
         return lastPage.page + 1;
@@ -90,11 +90,11 @@ export default function Home() {
   
   return (
     
-    <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-18 py-6">
+    <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-48 py-6">
        
       {isPending && <LoadingScreen/>}
       <div className="flex w-full h-full justify-center items-center">
-        {data && <MovieList movieData={data.pages.flatMap((page) => page.results)} />}
+        {data && <MovieList movieData={data.pages.flatMap((page) => page.results)} searchFilter={searchParam} />}
       </div>
       <div ref={observerTarget} className="py-6 text-center">
       <LoadingMoreMovies isFetchingNextPage={isFetchingNextPage} hasNextPage={hasNextPage} />

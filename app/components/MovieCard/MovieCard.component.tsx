@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import Image from 'next/image'
 
 import type { Props } from './MovieCard.types'
@@ -7,8 +8,8 @@ const MovieCard = ({
   title,
   releaseDate,
   onClick
-}: Props) => {
-  const getYear = new Date(releaseDate).getFullYear()
+}: Props): ReactElement => {
+  const getYear = releaseDate ? new Date(releaseDate).getFullYear() : 'Unknown'
   const url = `https://image.tmdb.org/t/p/w500${posterImage}`
 
   return (

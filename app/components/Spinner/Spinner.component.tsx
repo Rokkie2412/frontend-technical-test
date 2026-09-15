@@ -1,9 +1,11 @@
+import type { ReactElement } from "react";
+
 import { Props } from "./Spinner.types";
 
 const Spinner = ({ 
   width = 32, 
   height = 32, 
-}: Props) => (
+}: Props): ReactElement => (
   <div role="status" className="inline-flex items-center justify-center">
     <svg
       className={`animate-spin shrink-0 text-foreground`}

@@ -1,5 +1,6 @@
 import type { MovieDataType } from '../../types/movies.types'
 
 export type Props = {
-  movieData: MovieDataType[]
+  movieData: MovieDataType[],
+  searchFilter?: string
 }
