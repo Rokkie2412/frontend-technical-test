@@ -4,7 +4,7 @@ import { useState, type ReactElement } from 'react';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
-import { FILTER_CATEGORIES } from '../../constants'
+import { FILTER_CATEGORIES } from '@/constants'
 import { 
   setCategoryParams,
   onChangeInput, 

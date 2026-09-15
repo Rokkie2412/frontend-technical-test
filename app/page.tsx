@@ -5,10 +5,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from 'next/navigation'
 import Image from "next/image";
 
-import { axiosFetcher } from './libs/axios'
-import { MovieList, Spinner } from './components'
+import { axiosFetcher } from '@/libs/axios'
+import { MovieList, Spinner } from '@/components'
 
-import { getLinkQuery } from './utils'
+import { getLinkQuery } from '../utils'
 
 const LoadingScreen = (): ReactNode => (
   <div className='flex flex-1 flex-col w-full h-full justify-center items-center bg-zinc-900'>
