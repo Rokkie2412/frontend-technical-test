@@ -98,6 +98,9 @@ const TopBarNavigation = (): ReactElement =>  {
 
   return (
     <div className='bg-zinc-900 flex flex-col justify-center items-center '>
+      <div className='mt-8 mb-6'>
+        <p className='text-3xl md:text-4xl font-bold'>MOVIES DB</p>
+      </div>
       <div className='rounded-lg w-full px-8 md:px-14 lg:px-48 py-6'>
         <SearchInput search={search} setSearch={setSearch} onSubmit={setSearchParams(search, router)}/>
       </div>

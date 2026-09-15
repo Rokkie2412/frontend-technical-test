@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, type ReactElement } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { axiosFetcher } from '@/libs'
 import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
@@ -46,7 +46,8 @@ const LoadingMoreMovies = ({
 const Movies = () => {
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const pathParams = useSearchParams();
-  const category = pathParams.get('category') || '';
+  const router = useRouter()
+  const categoryParam = pathParams.get('category') || '';
   const searchParam = pathParams.get('search') || '';
 
   const { 
@@ -58,9 +59,9 @@ const Movies = () => {
     error,
     refetch
    } = useInfiniteQuery<InfiniteScrollMovieDate, Error>({
-    queryKey: ['getMovieList', category],
+    queryKey: ['getMovieList', categoryParam],
     initialPageParam: 1,
-    queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, category, (query.pageParam) as number)),
+    queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, categoryParam, (query.pageParam) as number)),
     getNextPageParam: getNextPageParam()
   })
 
@@ -95,7 +96,12 @@ const Movies = () => {
   return (
     <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-48 py-6">
       <div className="flex w-full h-full justify-center items-center">
-        {data && <MovieList movieData={getListMovies} searchFilter={searchParam} />}
+        <MovieList 
+          router={router}
+          movieData={getListMovies} 
+          filter={searchParam ? searchParam : categoryParam}
+          filterText={searchParam ? "Search Filter:" : "Category Filter:"}
+        />
       </div>
       <div ref={observerTarget} className="py-6 text-center">
       <LoadingMoreMovies isFetchingNextPage={isFetchingNextPage} hasNextPage={hasNextPage} />
