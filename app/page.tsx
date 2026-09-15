@@ -4,7 +4,7 @@ import { useRef, useEffect, type ReactElement } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from 'next/navigation'
 
-import { axiosFetcher } from '@/libs/axios'
+import { axiosFetcher } from '@/libs'
 import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 
 import { getLinkQuery, getNextPageParam } from './utils'

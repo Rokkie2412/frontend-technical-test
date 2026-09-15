@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import Image from 'next/image';
 import { useQuery } from "@tanstack/react-query";
 
-import { axiosFetcher } from "@/libs/axios";
+import { axiosFetcher } from "@/libs";
 import { MovieCard, LoadingState, ErrorState } from '@/components'
 import type { MovieDataType } from '@/types';
 
