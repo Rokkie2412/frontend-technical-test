@@ -5,6 +5,7 @@ import { TopbarNavigation } from "@/components";
 
 import Providers from './providers'
 import "./globals.css";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <TopbarNavigation/> 
-          {children}
+          <Suspense>
+            <TopbarNavigation/> 
+            {children}
+          </Suspense>
         </Providers>
       </body>
     </html>
