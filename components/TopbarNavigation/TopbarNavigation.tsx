@@ -9,6 +9,7 @@ import {
   setSearchParams 
 } from './TopbarNavigation.utils'
 import type { 
+  FilterButtonContainerProps,
   FilterButtonProps, 
   MovieListCategoryFilter, 
   SearchInputProps 
@@ -91,6 +92,24 @@ const FilterButton = ({
   </button>
 )
 
+const FilterButtonContainer = ({
+  searchParams,
+  router
+}: FilterButtonContainerProps) => {
+  return FILTER_CATEGORIES.map((category) => {
+    const isActiveButton = searchParams.get('category') === category.value
+    return (
+      <div key={category.value} className="shrink-0">
+        <FilterButton 
+          category={category} 
+          router={router}
+          isActive={isActiveButton}
+        />
+      </div>
+    )
+  })
+}
+
 const TopBarNavigation = (): ReactElement =>  {
   const [search, setSearch] = useState<string>('')
   const router = useRouter();
@@ -107,18 +126,7 @@ const TopBarNavigation = (): ReactElement =>  {
       <p className='text-md lg:text-lg'>Filter Movies By</p>
       <div className="w-full overflow-x-auto scroll-smooth py-2 px-4 md:px-8 mb-4 scrollbar-none [&::-webkit-scrollbar]:hidden">
         <div className="flex flex-row items-center gap-2 w-max mx-auto">
-          {FILTER_CATEGORIES.map((category) => {
-            const isActiveButton = searchParams.get('category') === category.value
-            return (
-              <div key={category.value} className="shrink-0">
-                <FilterButton 
-                  category={category} 
-                  router={router}
-                  isActive={isActiveButton}
-                />
-              </div>
-            )
-          })}
+          <FilterButtonContainer router={router} searchParams={searchParams} />
         </div>
       </div>
     </div>
