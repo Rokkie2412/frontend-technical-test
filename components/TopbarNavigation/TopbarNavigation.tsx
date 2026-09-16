@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactElement } from 'react';
+import { Suspense, useState, type ReactElement } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { 
@@ -91,7 +91,7 @@ const FilterButton = ({
   </button>
 )
 
-const TopBarNavigation = (): ReactElement =>  {
+const TopBarNavigationContent = (): ReactElement =>  {
   const [search, setSearch] = useState<string>('')
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -124,5 +124,11 @@ const TopBarNavigation = (): ReactElement =>  {
     </div>
   )
 }
+
+const TopBarNavigation = () => (
+  <Suspense>
+    <TopBarNavigationContent/>
+  </Suspense>
+)
 
 export default TopBarNavigation;
