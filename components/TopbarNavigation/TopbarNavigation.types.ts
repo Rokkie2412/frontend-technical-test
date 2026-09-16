@@ -1,7 +1,8 @@
+import type { SubmitEvent } from 'react';
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import type { ReadonlyURLSearchParams } from "next/navigation";
 
 import type { Setter } from '@/types'
-import type { ReadonlyURLSearchParams } from "next/navigation";
 
 export type MovieListCategoryFilter = { 
   label: string;
@@ -17,7 +18,7 @@ export type FilterButtonProps = {
 export type SearchInputProps = {
   setSearch: Setter<string>,
   search: string,
-  onSubmit: () => void
+  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void
 }
 
 export type FilterButtonContainerProps = {

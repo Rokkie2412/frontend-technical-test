@@ -59,7 +59,7 @@ const Movies = () => {
     error,
     refetch
    } = useInfiniteQuery<InfiniteScrollMovieDate, Error>({
-    queryKey: ['getMovieList', categoryParam],
+    queryKey: ['getMovieList', categoryParam, searchParam],
     initialPageParam: 1,
     queryFn: (query) => axiosFetcher(getLinkQuery(searchParam, categoryParam, (query.pageParam) as number)),
     getNextPageParam: getNextPageParam()

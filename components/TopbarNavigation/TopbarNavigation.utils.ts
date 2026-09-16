@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import type { SubmitEvent } from 'react';
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 import type { Setter } from "@/types";
@@ -21,12 +22,12 @@ export const setCategoryParams = (
 export const setSearchParams = (
   seachInput: string, 
   router: AppRouterInstance,
-) => (): void => {
+) => (event: SubmitEvent<HTMLFormElement>): void => {
+  event.preventDefault();
+
   if (!seachInput) {
     return
   }
-
-  router.push("/")
 
   const params = new URLSearchParams();
 
