@@ -121,7 +121,7 @@ const TopBarNavigation = (): ReactElement =>  {
         <p className='text-3xl md:text-4xl font-bold'>MOVIES DB</p>
       </div>
       <div className='rounded-lg w-full px-8 md:px-14 lg:px-48 py-6'>
-        <SearchInput search={search} setSearch={setSearch} onSubmit={setSearchParams(search, router)}/>
+        <SearchInput search={search} setSearch={setSearch} onSubmit={setSearchParams(search, router, setSearch)}/>
       </div>
       <p className='text-md lg:text-lg'>Filter Movies By</p>
       <div className="w-full overflow-x-auto scroll-smooth py-2 px-4 md:px-8 mb-4 scrollbar-none [&::-webkit-scrollbar]:hidden">

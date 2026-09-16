@@ -15,7 +15,7 @@ const FilterInfo = ({
       <div className='flex w-full justify-between'>
         <p className='mb-4 text-md lg:text-lg'>{filterText} {filter}</p>
         <button onClick={onClearFilter(router)} className='border-b mb-4 cursor-pointer'>
-          <p className='text-md lg:text-lg'>Clear Filter X</p>  
+          <p className='text-md lg:text-lg'>Clear Filter</p>  
         </button>
       </div>
     )

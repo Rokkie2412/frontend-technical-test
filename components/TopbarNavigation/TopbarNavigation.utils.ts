@@ -22,6 +22,7 @@ export const setCategoryParams = (
 export const setSearchParams = (
   seachInput: string, 
   router: AppRouterInstance,
+  setSearch: Setter<string>
 ) => (event: SubmitEvent<HTMLFormElement>): void => {
   event.preventDefault();
 
@@ -34,6 +35,8 @@ export const setSearchParams = (
   params.set('search', seachInput);
 
   router.push(`/?${params.toString()}`, { scroll: false });
+  
+  setSearch('')
 };
 
 export const onChangeInput = (setter: Setter<string>) => (e: ChangeEvent<HTMLInputElement, HTMLInputElement>): void => {

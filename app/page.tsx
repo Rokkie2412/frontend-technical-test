@@ -1,14 +1,15 @@
 'use client'
 
-import { useRef, useEffect, type ReactElement } from "react";
+import { useRef, type ReactElement, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { axiosFetcher } from '@/libs'
 import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 
-import { getLinkQuery, getNextPageParam, intersectionObserverEntries } from './utils'
-import { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
+import { getLinkQuery, getNextPageParam, scrollToTop } from './utils'
+import type { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
+import { useScrollListener, useTriggerInfiniteQuery } from './hooks'
 
 const EmptyState = () => {
   return (
@@ -18,6 +19,35 @@ const EmptyState = () => {
     </div>
   )
 }
+
+const GoTopButton = () => {
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      className={`
+        fixed bottom-8 right-8 z-50 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full
+        bg-gray-100 text-zinc-900 cursor-pointer
+      `}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2.5}
+        stroke="currentColor"
+        className="w-5 h-5"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4.5 15.75l7.5-7.5 7.5 7.5"
+        />
+      </svg>
+    </button>
+  );
+};
 
 const LoadingMoreMovies = ({
   isFetchingNextPage, 
@@ -44,6 +74,7 @@ const LoadingMoreMovies = ({
 }
 
 const Movies = () => {
+  const [showFloatingButton, setShowFloatingButton] = useState(false);
   const observerTarget = useRef<HTMLDivElement | null>(null);
   const pathParams = useSearchParams();
   const router = useRouter()
@@ -65,19 +96,9 @@ const Movies = () => {
     getNextPageParam: getNextPageParam()
   })
 
-  useEffect(() => {
-    const target = observerTarget.current;
-    if (!target) return;
+  useTriggerInfiniteQuery(observerTarget, hasNextPage, isFetchingNextPage, fetchNextPage)
 
-    const observer = new IntersectionObserver(
-      intersectionObserverEntries(hasNextPage, isFetchingNextPage, fetchNextPage),
-      { threshold: 0.5 }
-    );
-
-    observer.observe(target);
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  useScrollListener(setShowFloatingButton)
 
   const getListMovies = data?.pages.flatMap((page) => page.results) ?? []
 
@@ -95,6 +116,7 @@ const Movies = () => {
   
   return (
     <main className="flex flex-1 flex-col bg-zinc-900 w-full h-full px-8 md:px-14 lg:px-48 py-6">
+      {showFloatingButton && <GoTopButton/>}
       <div className="flex w-full h-full justify-center items-center">
         <MovieList 
           router={router}
@@ -106,7 +128,6 @@ const Movies = () => {
       <div ref={observerTarget} className="py-6 text-center">
       <LoadingMoreMovies isFetchingNextPage={isFetchingNextPage} hasNextPage={hasNextPage} />
       </div>
-
     </main>
   );
 }
