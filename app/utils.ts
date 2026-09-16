@@ -62,3 +62,7 @@ export const setToggleVisibility = (setShowFloatingButton: Setter<boolean>) => (
     setShowFloatingButton(false);
   }
 };
+
+export const formatFilterByCategory = (categoryParam: string) => {
+  return categoryParam.split('_').join(' ').toUpperCase()
+}

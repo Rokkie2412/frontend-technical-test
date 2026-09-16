@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { axiosFetcher } from '@/libs'
 import { MovieList, Spinner, ErrorState, LoadingState } from '@/components'
 
-import { getLinkQuery, getNextPageParam, scrollToTop } from './utils'
+import { getLinkQuery, getNextPageParam, scrollToTop, formatFilterByCategory } from './utils'
 import type { InfiniteScrollMovieDate, LoadingMoreMoviesProps } from "./types";
 import { useScrollListener, useTriggerInfiniteQuery } from './hooks'
 
@@ -121,7 +121,7 @@ const Movies = () => {
         <MovieList 
           router={router}
           movieData={getListMovies} 
-          filter={searchParam ? searchParam : categoryParam}
+          filter={searchParam ? searchParam : formatFilterByCategory(categoryParam)}
           filterText={searchParam ? "Search Filter:" : "Category Filter:"}
         />
       </div>
